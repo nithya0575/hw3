@@ -144,21 +144,18 @@ function checkPhoneNumber() {
 
 function checkDateOfBirth() {
   const dob = document.getElementById("dateOfBirth").value;
-  const dobRegex = /^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/(19|20)\d{2}$/; 
   if (dob === "") {
     document.getElementById("dobMessage").innerHTML = "Please enter a date of birth";
     hasError = true;
-  } else if (!dobRegex.test(dob)) {
-    document.getElementById("dobMessage").innerHTML = "Please enter a valid date of birth in the format mm/dd/yyyy";
-    hasError = true;
-  } else {
+  } 
+  else {
     document.getElementById("dobMessage").innerHTML = "";
   }
 }
 
 function checkSocialSecurity() {
   const ssn = document.getElementById("socialSecurity").value;
-  const ssnRegex = /^\d{3}-\d{2}-\d{4}$/;
+  const ssnRegex = /^\d{3}\d{2}\d{4}$/;
   if (ssn === "") {
     document.getElementById("ssnMessage").innerHTML = "Please enter a social security number";
     hasError = true;

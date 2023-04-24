@@ -85,7 +85,7 @@ Description: My page is a travel registration page for the company Happy Travels
                 onblur="checkaddress1()"
               />
             </td>
-            <td></td><span id="address1_message"></td>
+            <td><span id="address1Message"></span></td>
           </tr>
           <tr>
             <td>Address Line 2</td>
@@ -99,8 +99,8 @@ Description: My page is a travel registration page for the company Happy Travels
                 title="not required,2 to 30 characters"
                 onblur="checkaddress2()"
               />
-            </td> 
-            <td></td><span id="address2_message"></td>
+            </td>
+            <td><span id="address2Message"></span></td>
           </tr>
           <!-- asks customer to input address, address line 2 is an optional input  -->
           <tr>
@@ -179,6 +179,7 @@ Description: My page is a travel registration page for the company Happy Travels
               </select>
               <input
                 type="text"
+                id="zipcode"
                 name="zipCode"
                 placeholder="Zipcode"
                 required
@@ -186,8 +187,15 @@ Description: My page is a travel registration page for the company Happy Travels
                 maxlength="10"
                 oninvalid="this.setCustomMessage('Zipcode is Required')"
                 onchange="this.setCustomMessage('')"
+                onblur="checkzipcode()"
               />
             </td>
+            <td><span id="cityMessage"></span></td>
+            <br />
+            <td><span id="stateMessage"></span></td>
+            <br />
+            <td><span id="zipCodeMessage"></span></td>
+
             <!--asks customers to input thier location, city, state, and zipcode -->
           </tr>
           <tr>
@@ -195,13 +203,16 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="tel"
+                id="phonenumber"
                 name="phoneNumber"
                 placeholder="(123)-456-7890"
                 required
                 oninvalid="this.setCustomMessage('Phone Number is Required')"
                 onchange="this.setCustomMessage('')"
+                onblur="checkPhoneNumber()"
               />
             </td>
+            <td><span id="phoneNumberMessage"></span></td>
           </tr>
           <!-- asks customers to input phone number -->
           <tr>
@@ -209,14 +220,16 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="date"
+                id="dateOfBirth"
                 name="dateOfBirth"
                 placeholder="MM/DD/YYYY"
                 required
                 oninvalid="this.setCustomMessage('Date of Birth is Required')"
                 onchange="this.setCustomMessage('')"
+                onblur="checkDateOfBirth()"
               />
             </td>
-            <!-- asks customer date of birth -->
+            <td><span id="dobMessage"></span></td>
           </tr>
 
           <tr>
@@ -224,6 +237,7 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="password"
+                id="socialSecurity"
                 name="socialSecNum"
                 placeholder="XXX-XX-XXXX"
                 minlength="9"
@@ -231,9 +245,10 @@ Description: My page is a travel registration page for the company Happy Travels
                 required
                 oninvalid="this.setCustomMessage('SSN is Required')"
                 onchange="this.setCustomMessage('')"
+                onblur="checkSocialSecurity()"
               />
             </td>
-            <!-- asks SSN from customer -->
+            <td><span id="ssnMessage"></span></td>
           </tr>
 
           <tr>
@@ -241,14 +256,16 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="email"
+                id="emailAddress"
                 name="email"
                 placeholder="name@domain.com"
                 required
                 oninvalid="this.setCustomMessage('Email is Required')"
                 onchange="this.setCustomMessage('')"
+                onblur="checkEmailAddress()"
               />
             </td>
-            <!-- Asks for customers email -->
+            <td><span id="emailMessage"></span></td>
           </tr>
 
           <tr>
@@ -336,12 +353,13 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="text"
+                id="username"
                 name="userID"
                 placeholder="User ID"
                 maxlength="20"
-              />
+                onblur="checkUsername()"/>
             </td>
-            <!-- customer creates user id -->
+            <td><span id="usernameMessage"></span></td>
           </tr>
 
           <tr>
@@ -349,12 +367,16 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="password"
+                id="password"
                 name="password"
                 placeholder="Password"
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 title="Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-              />
+                onblur="checkPassword()"
+             
+                />
             </td>
+            <td><span id="passwordMessage"></span></td>
           </tr>
 
           <tr>
@@ -362,22 +384,19 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="password"
+                id="confirmPassword"
                 name="passReenter"
                 placeholder="Re-enter Password"
+                onblur="checkPasswordMatch()"
               />
             </td>
+            <td><span id="confirmPasswordMessage"></span></td>
           </tr>
 
           <tr>
-            <td>
-              <input
-                type="button"
-                name="review"
-                value="Review"
-                onclick="getDataReview()"
-              />
-            </td>
-            <td><input type="submit" name="submit" value="Submit" /></td>
+            <td><input type="button" name="review" value="Review" onclick="getDataReview()"/> </td>
+            <td><input type="button" id="check" value="Check your input" onclick="checkform()"></td>
+            <td><input type="submit" value="Submit" id="submit" disabled></td>
             <td><input type="reset" name="reset" value="Clear form" /></td>
           </tr>
           <!-- submit button directs customers to a thank you page, reset clears the form -->

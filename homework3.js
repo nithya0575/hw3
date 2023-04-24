@@ -1,4 +1,4 @@
-let error_flag = 0;
+let hasError = false;
 
 const date = Intl.DateTimeFormat("en-US", {
   month: "long",
@@ -16,89 +16,219 @@ budgetSlider.oninput = function () {
   budgetOutput.innerText = "$" + budgetSlider.value;
 };
 
-function checkfirstname()
-    {
-        x = document.getElementById("firstname").value;
-        if( x.length<2) { 
-              document.getElementById("name_message").innerHTML = "Invalid first name...too short.";  
-              error_flag = 1;
-        }
-        else {
-            if (x.match(/[a-zA-Z3-5'-]+$/)) {
-              document.getElementById("name_message").innerHTML = "";  
-            }
-            else  {
-              document.getElementById("name_message").innerHTML = "Invalid characters in first name.";
-              error_flag = 1;
-              }
-        }
+function checkfirstname() {
+  x = document.getElementById("firstname").value;
+  if (x.length < 2) {
+    document.getElementById("name_message").innerHTML =
+      "Invalid first name...too short.";
+    hasError = true;
+  } else {
+    if (x.match(/[a-zA-Z3-5'-]+$/)) {
+      document.getElementById("name_message").innerHTML = "";
+    } else {
+      document.getElementById("name_message").innerHTML =
+        "Invalid characters in first name.";
+      hasError = true;
     }
-    function checkmiddlename()
-    {
-        x = document.getElementById("middlename").value;
-        if( x.length>0) { 
-              if (x.match(/[a-zA-Z ]/)) {
-              document.getElementById("name_message").innerHTML = "";  
-            }
-            else  {
-              document.getElementById("name_message").innerHTML = "Invalid characters in middle name.";
-              error_flag = 1;
-              }
-        }
+  }
+}
+function checkmiddlename() {
+  x = document.getElementById("middlename").value;
+  if (x.length > 0) {
+    if (x.match(/[a-zA-Z ]/)) {
+      document.getElementById("name_message").innerHTML = "";
+    } else {
+      document.getElementById("name_message").innerHTML =
+        "Invalid characters in middle name.";
+      hasError = true;
     }
-function checklastname()
-    {
-        x = document.getElementById("lastname").value;
-        if( x.length<2) { 
-              document.getElementById("name_message").innerHTML = "Invalid Last Name...too short.";
-              error_flag = 1;  
-        }
-        else {
-            if (x.match(/[a-zA-Z3-5'-]+$/)) {
-              document.getElementById("name_message").innerHTML = "";  
-            }
-            else  {
-              document.getElementById("name_message").innerHTML = "Invalid characters in last name.";
-              error_flag = 1;
-              }
-        }
+  }
+}
+function checklastname() {
+  x = document.getElementById("lastname").value;
+  if (x.length < 2) {
+    document.getElementById("name_message").innerHTML =
+      "Invalid Last Name...too short.";
+    hasError = true;
+  } else {
+    if (x.match(/[a-zA-Z3-5'-]+$/)) {
+      document.getElementById("name_message").innerHTML = "";
+    } else {
+      document.getElementById("name_message").innerHTML =
+        "Invalid characters in last name.";
+      hasError = true;
     }
+  }
+}
 
-    function checkaddress1() {
-      x = document.getElementById("address1").value;
-      console.log(x.value);
-      console.log(x.length);
-      if (x.length < 2 ) {  
-        document.getElementById("address1_message").innerHTML = "Enter something on address 1 line";  
-        error_flag = 1; 
-        console.log(error_flag);
-        }
-        else { 
-            document.getElementById("address1_message").innerHTML = "";  
-        }
-        console.log(address1_message);
+function checkaddress1() {
+  x = document.getElementById("address1").value;
+  if (x.length === 0) {
+    document.getElementById("address1Message").innerHTML =
+      "Enter something on address 1 line";
+    hasError = true;
+  } else if (x.length === 1) {
+    document.getElementById("address1Message").innerHTML =
+      "Enter more characters on address 1 line";
+    hasError = true;
+  } else {
+    document.getElementById("address1Message").innerHTML = "";
   }
-  function checkaddress2() {}
-  
-  function checkcity() {
-           if (document.getElementById("city").value.match(/^[ a-zA-Z3-5'-]+$/)) {
-                document.getElementById("city_message").innerHTML = "";  
-              }
-              else  {
-                document.getElementById("city_message").innerHTML = "Invalid characters in City name.";
-                error_flag = 1;
-                }
+}
+function checkaddress2() {
+  x = document.getElementById("address2").value;
+  if (x.length > 0) {
+    if (x.length === 1) {
+      document.getElementById("address2Message").innerHTML =
+        "Enter more characters for address 2";
+      hasError = true;
+    } else if (x.length > 30) {
+      document.getElementById("address2Message").innerHTML =
+        "Enter less characters for address 2";
+      hasError = true;
+    } else {
+      document.getElementById("address2Message").innerHTML = "";
+    }
   }
-  function checkstate() {
-          z=document.getElementById("state").value;
-          if(z=="") { 
-                document.getElementById("state_message").innerHTML = "Please choose a state";  
-                error_flag = 1;
-          }
-          else {
-            document.getElementById("state_message").innerHTML = ""; 
-          }
+}
+
+function checkcity() {
+  x = document.getElementById("city").value;
+  if (x.match(/^[ a-zA-Z3-5'-]+$/) && x.length > 1 && x.length < 30) {
+    document.getElementById("cityMessage").innerHTML = "";
+  } else {
+    document.getElementById("cityMessage").innerHTML =
+      "Invalid characters in City name.";
+    hasError = true;
   }
+}
+function checkstate() {
+  z = document.getElementById("state").value;
+  if (z == "") {
+    document.getElementById("stateMessage").innerHTML = "Please choose a state";
+    hasError = true;
+  } else {
+    document.getElementById("stateMessage").innerHTML = "";
+  }
+}
+
+function checkzipcode() {
+  const zipCode = document.getElementById("zipcode").value;
+  const zipCodeRegex = /^\d{5}$/;
+  if (zipCode === "") {
+    document.getElementById("zipCodeMessage").innerHTML =
+      "Please enter a zip code";
+    hasError = true;
+  } else if (!zipCodeRegex.test(zipCode)) {
+    document.getElementById("zipCodeMessage").innerHTML =
+      "Please enter a valid 5-digit zip code";
+    hasError = true;
+  } else {
+    document.getElementById("zipCodeMessage").innerHTML = "";
+  }
+}
+
+function checkPhoneNumber() {
+  const phoneNumber = document.getElementById("phonenumber").value;
+  const phoneNumberRegex = /^\d{3}-\d{3}-\d{4}$/; // regular expression to match US phone numbers in the format xxx-xxx-xxxx
+  if (phoneNumber === "") {
+    document.getElementById("phoneNumberMessage").innerHTML = "Please enter a phone number";
+    hasError = true;
+  } else if (!phoneNumberRegex.test(phoneNumber)) {
+    document.getElementById("phoneNumberMessage").innerHTML = "Please enter a valid US phone number in the format xxx-xxx-xxxx";
+    hasError = true;
+  } else {
+    document.getElementById("phoneNumberMessage").innerHTML = "";
+  }
+}
+
+function checkDateOfBirth() {
+  const dob = document.getElementById("dateOfBirth").value;
+  const dobRegex = /^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/(19|20)\d{2}$/; 
+  if (dob === "") {
+    document.getElementById("dobMessage").innerHTML = "Please enter a date of birth";
+    hasError = true;
+  } else if (!dobRegex.test(dob)) {
+    document.getElementById("dobMessage").innerHTML = "Please enter a valid date of birth in the format mm/dd/yyyy";
+    hasError = true;
+  } else {
+    document.getElementById("dobMessage").innerHTML = "";
+  }
+}
+
+function checkSocialSecurity() {
+  const ssn = document.getElementById("socialSecurity").value;
+  const ssnRegex = /^\d{3}-\d{2}-\d{4}$/;
+  if (ssn === "") {
+    document.getElementById("ssnMessage").innerHTML = "Please enter a social security number";
+    hasError = true;
+  } else if (!ssnRegex.test(ssn)) {
+    document.getElementById("ssnMessage").innerHTML = "Please enter a valid social security number in the format xxx-xx-xxxx";
+    hasError = true;
+  } else {
+    document.getElementById("ssnMessage").innerHTML = "";
+  }
+}
+
+function checkEmailAddress() {
+  const email = document.getElementById("emailAddress").value;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+  if (email === "") {
+    document.getElementById("emailMessage").innerHTML = "Please enter an email address";
+    hasError = true;
+  } else if (!emailRegex.test(email)) {
+    document.getElementById("emailMessage").innerHTML = "Please enter a valid email address";
+    hasError = true;
+  } else {
+    document.getElementById("emailMessage").innerHTML = "";
+  }
+}
+
+function checkUsername() {
+  const username = document.getElementById("username").value;
+  const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_-]{4,19}$/; 
+  if (username === "") {
+    document.getElementById("usernameMessage").innerHTML = "Please enter a username";
+    hasError = true;
+  } else if (!usernameRegex.test(username)) {
+    document.getElementById("usernameMessage").innerHTML = "Please enter a valid username that starts with a letter, is at least 5 characters but no more than 20, and cannot have spaces or any special characters in it";
+    hasError = true;
+  } else {
+    document.getElementById("usernameMessage").innerHTML = "";
+  }
+}
+
+function checkPassword() {
+  const password = document.getElementById("password").value;
+  const userId = document.getElementById("username").value;
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/; // regular expression to match passwords
+  if (password === "") {
+    document.getElementById("passwordMessage").innerHTML = "Please enter a password";
+    hasError = true;
+  } else if (!passwordRegex.test(password)) {
+    document.getElementById("passwordMessage").innerHTML = "Please enter a valid password that is at least 8 characters long, contains at least 1 upper case, 1 lower case letter, and 1 digit";
+    hasError = true;
+  } else if (password === userId) {
+    document.getElementById("passwordMessage").innerHTML = "Password cannot equal your desired User ID";
+    hasError = true;
+  } else {
+    document.getElementById("passwordMessage").innerHTML = "";
+  }
+}
+
+function checkPasswordMatch() {
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+  if (confirmPassword === "") {
+    document.getElementById("confirmPasswordMessage").innerHTML = "Please confirm your password";
+    hasError = true;
+  } else if (password !== confirmPassword) {
+    document.getElementById("confirmPasswordMessage").innerHTML = "Passwords do not match";
+    hasError = true;
+  } else {
+    document.getElementById("confirmPasswordMessage").innerHTML = "";
+  }
+}
 
 
 function getDataReview() {
@@ -114,7 +244,6 @@ function getDataReview() {
       switch (dataType) {
         case "checkbox":
           if (contents.elements[i].checked) {
-            console.log(contents.elements[i]);
             foutput = `${foutput}<tr><td align='right'>${contents.elements[i].name}</td>`;
             foutput = `${foutput}<td align='right'>${dataType}</td>`;
             foutput = `${foutput}<td class='outputdata'>${contents.elements[i].value}</td></tr>`;
@@ -142,5 +271,31 @@ function getDataReview() {
   if (foutput.length > 0) {
     foutput = foutput + "</table>";
     document.getElementById("dataReview").innerHTML = foutput;
+  }
+}
+
+function checkform() 
+{
+  let hasError = false;
+  checkfirstname();
+  checkmiddlename();
+  checklastname();
+  checkDateOfBirth();
+  checkEmailAddress();
+  checkPassword();
+  checkPasswordMatch();
+  checkPhoneNumber();
+  checkSocialSecurity();
+  checkUsername();
+  checkaddress1();
+  checkaddress2();
+  checkcity();
+
+  if (hasError = true)
+  {
+    alert("Please fix the indicated errors!");
+  }
+  else {
+    document.getElementById("submit").disabled = false;
   }
 }

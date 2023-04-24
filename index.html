@@ -30,6 +30,7 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="text"
+                id="firstname"
                 name="firstName"
                 placeholder="First Name"
                 maxlength="30"
@@ -38,18 +39,22 @@ Description: My page is a travel registration page for the company Happy Travels
                 title="1 to 30 characters; letters, apostrophes, and dashes only"
                 oninvalid="this.setCustomMessage('First Name is Required')"
                 onchange="this.setCustomMessage('')"
+                onblur="checkfirstname()"
               />
               <input
                 type="text"
+                id="middlename"
                 name="middleName"
                 size="4"
                 maxlength="1"
                 pattern="[A-Z^a-z ]{0,}"
                 title="1 characters; letters only, no numbers, blank/null ok"
                 placeholder="MI"
+                onblur="checkmiddlename()"
               />
               <input
                 type="text"
+                id="lastname"
                 name="lastName"
                 maxlength="30"
                 pattern="[A-Z^a-z34-' ]{2,}"
@@ -58,8 +63,10 @@ Description: My page is a travel registration page for the company Happy Travels
                 placeholder="Last Name"
                 oninvalid="this.setCustomValidity('Last Name is Required')"
                 onchange="this.setCustomValidity('')"
+                onblur="checklastname()"
               />
             </td>
+            <td><span id="name_message"></span></td>
             <!-- asks for user to input name, mi, and last name -->
           </tr>
           <tr>
@@ -67,6 +74,7 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="text"
+                id="address1"
                 name="address"
                 placeholder="Address"
                 maxlength="30"
@@ -74,20 +82,25 @@ Description: My page is a travel registration page for the company Happy Travels
                 title="required,2 to 30 characters"
                 oninvalid="this.setCustomValidity('Address is Required')"
                 onchange="this.setCustomValidity('')"
+                onblur="checkaddress1()"
               />
             </td>
+            <td></td><span id="address1_message"></td>
           </tr>
           <tr>
             <td>Address Line 2</td>
             <td>
               <input
                 type="text"
+                id="address2"
                 name="address2"
                 placeholder="APT #, Unit, etc."
                 maxlength="30"
                 title="not required,2 to 30 characters"
+                onblur="checkaddress2()"
               />
-            </td>
+            </td> 
+            <td></td><span id="address2_message"></td>
           </tr>
           <!-- asks customer to input address, address line 2 is an optional input  -->
           <tr>
@@ -95,17 +108,21 @@ Description: My page is a travel registration page for the company Happy Travels
             <td>
               <input
                 type="text"
+                id="city"
                 name="city"
                 placeholder="City"
                 required
                 maxlength="30"
                 oninvalid="this.setCustomMessage('City is Required')"
                 onchange="this.setCustomMessage('')"
+                onblur="checkcity()"
               />
               <select
                 required
+                id="state"
                 oninvalid="this.setCustomMessage('State is Required')"
                 onchange="this.setCustomMessage('')"
+                onblur="checkstate()"
               >
                 <option value="">Select State</option>
                 <option value="AL">Alabama</option>

@@ -296,3 +296,7 @@ function checkform()
     document.getElementById("submit").disabled = false;
   }
 }
+
+function submitForm() {
+  window.location.href = "thankyou.html";
+}

@@ -288,7 +288,7 @@ function checkform()
   checkaddress2();
   checkcity();
 
-  if (hasError = true)
+  if (hasError)
   {
     alert("Please fix the indicated errors!");
   }

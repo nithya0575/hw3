@@ -1,3 +1,103 @@
+const firstName = getCookie("firstName");
+if (firstName) {
+  document.getElementById(
+    "welcome-message"
+  ).textContent = `Welcome back, ${firstName}!`;
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.id = "new-user-checkbox";
+  checkbox.value = "new-user";
+  checkbox.addEventListener("change", handleCheckboxChange);
+  const label = document.createElement("label");
+  label.htmlFor = "new-user-checkbox";
+  label.textContent = `Not ${firstName}, click HERE to start as a NEW USER.`;
+  document.getElementById("checkbox-container").appendChild(checkbox);
+  document.getElementById("checkbox-container").appendChild(label);
+} else {
+  document.getElementById("welcome-message").textContent = "Welcome New user!";
+
+  setCookie("firstName", "New user", 2);
+}
+
+function getCookie(name) {
+  const cookieString = document.cookie;
+  const cookies = cookieString.split(";");
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith(`${name}=`)) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+  return null;
+}
+
+function setCookie(name, value, days) {
+  const expiryDate = new Date();
+  expiryDate.setTime(expiryDate.getTime() + days * 24 * 60 * 60 * 1000);
+  const expires = `expires=${expiryDate.toUTCString()}`;
+  document.cookie = `${name}=${value};${expires};path=/`;
+}
+
+function deleteCookie(name) {
+  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+}
+
+const savedFormData = localStorage.getItem("form");
+const budgetOutput = document.getElementById("budgetValue");
+
+const formFields = document.querySelectorAll(
+  'input:not([type="button"]), select, textarea'
+);
+
+if (savedFormData) {
+  const form = document.querySelector("form");
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.id = "restore-form";
+  checkbox.name = "restore-form";
+  checkbox.value = "true";
+  const label = document.createElement("label");
+  label.textContent = "Do you want to continue where you left off?";
+  label.setAttribute("for", "restore-form");
+  form.prepend(checkbox, label);
+
+  checkbox.addEventListener("change", () => {
+    if (checkbox.checked) {
+      const formData = JSON.parse(savedFormData);
+      formFields.forEach((field) => {
+        if (field.id === "budget") {
+          budgetOutput.innerText = "$" + formData[field.name];
+        }
+      });
+      formFields.forEach((field) => {
+        if (field.type === "checkbox") {
+          field.checked = formData[field.name];
+        } else if (field.type === "radio") {
+          field.checked = formData[field.name] === field.value;
+        } else {
+          field.value = formData[field.name];
+        }
+      });
+    }
+  });
+}
+
+function handleCheckboxChange() {
+  const checkbox = document.getElementById("new-user-checkbox");
+  if (checkbox.checked) {
+    deleteCookie("firstName");
+
+    document.getElementById("welcome-message").textContent =
+      "Welcome New user!";
+  } else {
+    setCookie("firstName", firstName, 2);
+    document.getElementById(
+      "welcome-message"
+    ).textContent = `Welcome back, ${firstName}!`;
+  }
+}
+
 let hasError = false;
 
 const date = Intl.DateTimeFormat("en-US", {
@@ -10,7 +110,6 @@ const dateElement = document.getElementById("today-date");
 dateElement.innerText = date.toString();
 
 const budgetSlider = document.getElementById("budget");
-const budgetOutput = document.getElementById("budgetValue");
 
 budgetSlider.oninput = function () {
   budgetOutput.innerText = "$" + budgetSlider.value;
@@ -132,10 +231,12 @@ function checkPhoneNumber() {
   const phoneNumber = document.getElementById("phonenumber").value;
   const phoneNumberRegex = /^\d{3}-\d{3}-\d{4}$/; // regular expression to match US phone numbers in the format xxx-xxx-xxxx
   if (phoneNumber === "") {
-    document.getElementById("phoneNumberMessage").innerHTML = "Please enter a phone number";
+    document.getElementById("phoneNumberMessage").innerHTML =
+      "Please enter a phone number";
     hasError = true;
   } else if (!phoneNumberRegex.test(phoneNumber)) {
-    document.getElementById("phoneNumberMessage").innerHTML = "Please enter a valid US phone number in the format xxx-xxx-xxxx";
+    document.getElementById("phoneNumberMessage").innerHTML =
+      "Please enter a valid US phone number in the format xxx-xxx-xxxx";
     hasError = true;
   } else {
     document.getElementById("phoneNumberMessage").innerHTML = "";
@@ -145,10 +246,10 @@ function checkPhoneNumber() {
 function checkDateOfBirth() {
   const dob = document.getElementById("dateOfBirth").value;
   if (dob === "") {
-    document.getElementById("dobMessage").innerHTML = "Please enter a date of birth";
+    document.getElementById("dobMessage").innerHTML =
+      "Please enter a date of birth";
     hasError = true;
-  } 
-  else {
+  } else {
     document.getElementById("dobMessage").innerHTML = "";
   }
 }
@@ -157,10 +258,12 @@ function checkSocialSecurity() {
   const ssn = document.getElementById("socialSecurity").value;
   const ssnRegex = /^\d{3}\d{2}\d{4}$/;
   if (ssn === "") {
-    document.getElementById("ssnMessage").innerHTML = "Please enter a social security number";
+    document.getElementById("ssnMessage").innerHTML =
+      "Please enter a social security number";
     hasError = true;
   } else if (!ssnRegex.test(ssn)) {
-    document.getElementById("ssnMessage").innerHTML = "Please enter a valid social security number in the format xxx-xx-xxxx";
+    document.getElementById("ssnMessage").innerHTML =
+      "Please enter a valid social security number in the format xxx-xx-xxxx";
     hasError = true;
   } else {
     document.getElementById("ssnMessage").innerHTML = "";
@@ -169,12 +272,14 @@ function checkSocialSecurity() {
 
 function checkEmailAddress() {
   const email = document.getElementById("emailAddress").value;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (email === "") {
-    document.getElementById("emailMessage").innerHTML = "Please enter an email address";
+    document.getElementById("emailMessage").innerHTML =
+      "Please enter an email address";
     hasError = true;
   } else if (!emailRegex.test(email)) {
-    document.getElementById("emailMessage").innerHTML = "Please enter a valid email address";
+    document.getElementById("emailMessage").innerHTML =
+      "Please enter a valid email address";
     hasError = true;
   } else {
     document.getElementById("emailMessage").innerHTML = "";
@@ -183,12 +288,14 @@ function checkEmailAddress() {
 
 function checkUsername() {
   const username = document.getElementById("username").value;
-  const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_-]{4,19}$/; 
+  const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_-]{4,19}$/;
   if (username === "") {
-    document.getElementById("usernameMessage").innerHTML = "Please enter a username";
+    document.getElementById("usernameMessage").innerHTML =
+      "Please enter a username";
     hasError = true;
   } else if (!usernameRegex.test(username)) {
-    document.getElementById("usernameMessage").innerHTML = "Please enter a valid username that starts with a letter, is at least 5 characters but no more than 20, and cannot have spaces or any special characters in it";
+    document.getElementById("usernameMessage").innerHTML =
+      "Please enter a valid username that starts with a letter, is at least 5 characters but no more than 20, and cannot have spaces or any special characters in it";
     hasError = true;
   } else {
     document.getElementById("usernameMessage").innerHTML = "";
@@ -200,13 +307,16 @@ function checkPassword() {
   const userId = document.getElementById("username").value;
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/; // regular expression to match passwords
   if (password === "") {
-    document.getElementById("passwordMessage").innerHTML = "Please enter a password";
+    document.getElementById("passwordMessage").innerHTML =
+      "Please enter a password";
     hasError = true;
   } else if (!passwordRegex.test(password)) {
-    document.getElementById("passwordMessage").innerHTML = "Please enter a valid password that is at least 8 characters long, contains at least 1 upper case, 1 lower case letter, and 1 digit";
+    document.getElementById("passwordMessage").innerHTML =
+      "Please enter a valid password that is at least 8 characters long, contains at least 1 upper case, 1 lower case letter, and 1 digit";
     hasError = true;
   } else if (password === userId) {
-    document.getElementById("passwordMessage").innerHTML = "Password cannot equal your desired User ID";
+    document.getElementById("passwordMessage").innerHTML =
+      "Password cannot equal your desired User ID";
     hasError = true;
   } else {
     document.getElementById("passwordMessage").innerHTML = "";
@@ -217,16 +327,17 @@ function checkPasswordMatch() {
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("confirmPassword").value;
   if (confirmPassword === "") {
-    document.getElementById("confirmPasswordMessage").innerHTML = "Please confirm your password";
+    document.getElementById("confirmPasswordMessage").innerHTML =
+      "Please confirm your password";
     hasError = true;
   } else if (password !== confirmPassword) {
-    document.getElementById("confirmPasswordMessage").innerHTML = "Passwords do not match";
+    document.getElementById("confirmPasswordMessage").innerHTML =
+      "Passwords do not match";
     hasError = true;
   } else {
     document.getElementById("confirmPasswordMessage").innerHTML = "";
   }
 }
-
 
 function getDataReview() {
   const contents = document.getElementById("registration");
@@ -271,8 +382,7 @@ function getDataReview() {
   }
 }
 
-function checkform() 
-{
+function checkform() {
   let hasError = false;
   checkfirstname();
   checkmiddlename();
@@ -288,15 +398,60 @@ function checkform()
   checkaddress2();
   checkcity();
 
-  if (hasError)
-  {
+  if (hasError) {
     alert("Please fix the indicated errors!");
-  }
-  else {
+  } else {
     document.getElementById("submit").disabled = false;
   }
 }
 
 function submitForm() {
+  const formData = {};
+  formFields.forEach((field) => {
+    if (field.type === "checkbox") {
+      formData[field.name] = field.checked;
+    } else if (field.type === "range") {
+      formData[field.name] = field.valueAsNumber;
+    } else if (field.type === "radio") {
+      if (field.checked) {
+        formData[field.name] = field.value;
+      }
+    } else {
+      formData[field.name] = field.value;
+    }
+  });
+
+  // Save the form data to local storage
+  localStorage.setItem("form", JSON.stringify(formData));
+  setCookie("firstName", formData?.firstName, 2);
   window.location.href = "thankyou.html";
+}
+
+window.onscroll = function () {
+  myHeader();
+};
+
+// Get the header
+var header = document.getElementById("myHeader");
+
+// Get the offset position of the navbar
+var sticky = header.offsetTop;
+
+// Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+function myHeader() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+
+{
+  /* <script src="https://www.google.com/recaptcha/api.js"></script>
+
+<script>
+function onSubmit(token) {
+  document.getElementById("demo-form").submit();
+}
+</script> */
 }
